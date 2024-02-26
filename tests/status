@@ -1,0 +1,68 @@
+Package: package-a
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 100
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-1
+Depends: package-b
+Description: Package A
+ A simple package that depends on package B.
+
+Package: package-b
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 100
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-1
+Depends: package-c, package-d
+Description: Package B
+ A simple package that depends on package C and D.
+
+Package: package-c
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 100
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-1
+Description: Package C
+ A simple package with no dependencies.
+
+Package: package-d
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 100
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-1
+Depends: package-e | package-f
+Description: Package D
+ A package that depends on package E or alternatively package F.
+
+Package: package-e
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 100
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-1
+Description: Package E
+ A simple package with no dependencies.
+
+Package: package-f
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 150
+Maintainer: Example Maintainer <maintainer@example.com>
+Architecture: all
+Version: 1.0-2
+Description: Package F
+ An alternative simple package with no dependencies.
