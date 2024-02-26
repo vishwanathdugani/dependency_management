@@ -46,5 +46,5 @@ Certainly, here's a refined and concise version of the future improvements and c
 - Simplified data presentation by limiting package information to name and description for better readability.
 - Expand testing protocols to thoroughly cover edge cases and ensure robustness.
 - Transition from an in-memory model to a graph database for improved data management and scalability.
-- Implement background processes for seamless synchronization between the status file and graph database.
+- Implement background async tasks for synchronization between the status file and graph database.
 - Incorporate safeguards against circular dependencies to maintain system stability.
