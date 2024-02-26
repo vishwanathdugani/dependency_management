@@ -31,7 +31,7 @@ There is a CI pipeline (github actions) that is implemented to automatically tes
 
 ### Repository and Docker Setup
 
-To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up` command. 
+To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up --build` command. 
 
 This setup encapsulates the application in a container, streamlining deployment and ensuring environment consistency.
 
@@ -42,7 +42,7 @@ This API stands out for its practical application in managing package dependenci
 
 Certainly, here's a refined and concise version of the future improvements and considerations for your project:
 
-- The assumption was made that the user is trying to manage depedencies on a debian/ubuntu server where the file is stored. 
+- The assumption was made that the user is trying to manage dependencies on a debian/ubuntu server where the file is stored. 
 - Enhance API security with additional authentication and encryption layers.
 - Develop a user interface for visual data representation, improving user experience.
 - Simplified data presentation by limiting package information to name and description for better readability.
