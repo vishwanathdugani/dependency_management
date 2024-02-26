@@ -33,11 +33,6 @@ There is a CI pipeline (github actions) that is implemented to automatically tes
 
 To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up --build` command. 
 
-This setup encapsulates the application in a container, streamlining deployment and ensuring environment consistency.
-
-This API stands out for its practical application in managing package dependencies, offering a robust solution for developers navigating complex software ecosystems.
-
-
 ### Future improvements and considerations
 
 Certainly, here's a refined and concise version of the future improvements and considerations for your project:
