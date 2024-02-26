@@ -3,9 +3,7 @@
 Dependency graph for status located in
 /var/lib/dpkg/status that holds information about software packages.
 
-This API utilizes a directed graph to manage package dependencies, where nodes represent packages, and edges denote dependencies. It allows for the visualization and management of complex package ecosystems, effectively addressing challenges such as circular dependencies, version conflicts, and the minimization of redundant installations.
-
-The API's core functionalities rely on depth-first search (DFS) for traversing the dependency graph. This approach efficiently identifies direct and indirect dependencies (forward search) and reverse dependencies (backward search). The DFS algorithm ensures comprehensive exploration of all possible paths, making it adept at uncovering complex interdependencies within the package ecosystem.
+This API utilizes a directed graph to manage package dependencies, where nodes represent packages, and edges denote dependencies. The API's core functionalities rely on depth-first search (DFS) for traversing the dependency graph. 
 
 
 
