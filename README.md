@@ -27,6 +27,8 @@ Running Tests:
 
 This command executes tests in the container and generates a report named `report.html` in the tests directory.
 
+There is a CI pipeline (github actions) that is implemented to automatically test the graph traversal and depenency retreival. 
+
 ### Repository and Docker Setup
 
 To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up` command. 
