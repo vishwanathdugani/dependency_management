@@ -70,39 +70,33 @@ def build_graphs(content: str):
             print(f"Error parsing package info: {e}")
 
 
-def find_all_dependencies(package_name: str, visited: Set[str] = None) -> Set[str]:
+def find_dependencies(package_name: str, visited: Set[str] = None, forward=True) -> Set[str]:
     """
-    Finds all dependencies for a given package, optionally limiting to direct dependencies.
+    Finds all dependencies or reverse dependencies for a given package, optionally limiting to direct dependencies.
     """
+
     if visited is None:
         visited = set()
+
     if package_name in visited:
         return set()
+
     visited.add(package_name)
     all_deps = set()
-    if package_name in dependencies_graph:
-        direct_deps = {dep.name for dep in dependencies_graph[package_name].Depends}
+
+    if forward:
+        graph = dependencies_graph
+        get_deps = lambda pkg: {dep.name for dep in graph[pkg].Depends}
+    else:
+        graph = reverse_dependencies_graph
+        get_deps = graph.get
+
+    if package_name in graph:
+        direct_deps = get_deps(package_name)
         for dep_name in direct_deps:
             all_deps.add(dep_name)
-            all_deps.update(find_all_dependencies(dep_name, visited))
-    return all_deps
+            all_deps.update(find_dependencies(dep_name, visited, forward))
 
-
-def find_all_reverse_dependencies(package_name: str, visited: Set[str] = None) -> Set[str]:
-    """
-    Finds all packages that depend on the given package, including indirect dependencies.
-    """
-    if visited is None:
-        visited = set()
-    if package_name in visited:
-        return set()
-    visited.add(package_name)
-    all_deps = set()
-    if package_name in reverse_dependencies_graph:
-        direct_deps = reverse_dependencies_graph[package_name]
-        for dep in direct_deps:
-            all_deps.add(dep)
-            all_deps.update(find_all_reverse_dependencies(dep, visited))
     return all_deps
 
 
@@ -119,13 +113,13 @@ def get_package_details(package_name: str, base_url: str) -> Dict:
         dep.name: [f"{base_url}/package/{alt}" for alt in dep.alternatives]
         for dep in package_info.Depends if dep.alternatives
     }
-    all_deps = find_all_dependencies(package_name, visited=set())
+    all_deps = find_dependencies(package_name, visited=set())
     direct_deps_names = {dep.name for dep in package_info.Depends}
     indirect_deps_names = all_deps - direct_deps_names - {package_name}
     indirect_deps_info = [f"{base_url}/package/{dep}" for dep in indirect_deps_names]
 
     direct_reverse_deps = reverse_dependencies_graph.get(package_name, set())
-    indirect_reverse_deps = find_all_reverse_dependencies(package_name) - direct_reverse_deps - {package_name}
+    indirect_reverse_deps = find_dependencies(package_name, forward=False) - direct_reverse_deps - {package_name}
 
     return {
         "package": package_info.Package,

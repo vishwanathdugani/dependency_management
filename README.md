@@ -1,5 +1,7 @@
-### Dependency management for Debian/Linux server packages
+# Dependency management for Debian/Linux server packages
 
+Dependency graph for status located in
+/var/lib/dpkg/status that holds information about software packages.
 
 This API utilizes a directed graph to manage package dependencies, where nodes represent packages, and edges denote dependencies. It allows for the visualization and management of complex package ecosystems, effectively addressing challenges such as circular dependencies, version conflicts, and the minimization of redundant installations.
 
@@ -29,6 +31,8 @@ This command executes tests in the container and generates a report named `repor
 
 ### Repository and Docker Setup
 
-The repository can be found at `git@github.com:vishwanathdugani/dependency_management.git`. To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up` command. This setup encapsulates the application in a container, streamlining deployment and ensuring environment consistency.
+To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up` command. 
+
+This setup encapsulates the application in a container, streamlining deployment and ensuring environment consistency.
 
 This API stands out for its practical application in managing package dependencies, offering a robust solution for developers navigating complex software ecosystems.
