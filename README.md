@@ -9,7 +9,7 @@ This API utilizes a directed graph to manage package dependencies, where nodes r
 
 ### Endpoints and How They Work
 
-- **POST `/upload-status-file/`**: Accepts a multipart file upload containing package data. It parses the file to build dependency graphs for all listed packages. Example response: `{"message": "Graph built successfully"}` indicates successful graph construction.
+- **POST `/upload-status-file/`**: Accepts a multipart file upload containing package data. It parses the file to build dependency graphs for all listed packages. Example response: `{"message": "Graph built successfully"}` indicates successful graph construction. There is a start up task that load a sample status file. 
   
 - **GET `/packages/`**: Lists all packages by their names and descriptions, providing a broad overview of the repository's contents.
   
