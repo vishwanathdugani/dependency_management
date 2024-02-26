@@ -1,7 +1,9 @@
+import os
 from fastapi import FastAPI, HTTPException, UploadFile, File, Request
 from graph_functions.dependencies_helper import build_graphs, get_package_details, get_packages_with_no_dependencies
 
 app = FastAPI()
+
 
 @app.post("/upload-status-file/")
 async def upload_status_file(file: UploadFile = File(...)):
@@ -12,6 +14,7 @@ async def upload_status_file(file: UploadFile = File(...)):
     content_str = content_bytes.decode('utf-8')
     build_graphs(content_str)
     return {"message": "Graph built successfully"}
+
 
 @app.get("/packages/")
 def list_packages():
@@ -24,6 +27,7 @@ def list_packages():
         for pkg, info in dependencies_graph.items()
     ]
 
+
 @app.get("/package/{package_name}/")
 def package_details(package_name: str, request: Request):
     """
@@ -35,6 +39,7 @@ def package_details(package_name: str, request: Request):
         raise HTTPException(status_code=404, detail="Package not found")
     return package_info
 
+
 @app.get("/packages/no-dependencies/")
 def packages_with_no_dependencies():
     """
@@ -44,3 +49,12 @@ def packages_with_no_dependencies():
     if not packages:
         return {"message": "All packages have dependencies"}
     return {"packages": packages}
+
+
+@app.on_event("startup")
+async def startup_event():
+    status_file_path = 'status'
+    if os.path.exists(status_file_path):
+        with open(status_file_path, 'r') as file:
+            content_str = file.read()
+            build_graphs(content_str)

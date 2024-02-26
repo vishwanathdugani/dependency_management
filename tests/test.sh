@@ -4,14 +4,14 @@
 HOST="http://localhost:8000"
 
 # Specify the path to the status file you want to upload
-STATUS_FILE_PATH="status"
-
-# Upload the status file
-echo "Uploading status file..."
-curl -X POST "${HOST}/upload-status-file/" \
-     -H "Content-Type: multipart/form-data" \
-     -F "file=@${STATUS_FILE_PATH}"
-echo -e "\n" # New line for readability
+#STATUS_FILE_PATH="tests/status"
+#
+## Upload the status file
+#echo "Uploading status file..."
+#curl -X POST "${HOST}/upload-status-file/" \
+#     -H "Content-Type: multipart/form-data" \
+#     -F "file=@${STATUS_FILE_PATH}"
+#echo -e "\n" # New line for readability
 
 # List all packages
 echo "Listing all packages..."
