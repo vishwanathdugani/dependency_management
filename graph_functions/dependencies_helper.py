@@ -103,6 +103,13 @@ def find_dependencies(package_name: str, visited: Set[str] = None, forward=True)
 def get_package_details(package_name: str, base_url: str) -> Dict:
     """
     Retrieves detailed information about a package, including dependencies and reverse dependencies.
+
+     The "direct_dependencies" are packages a given package immediately requires to function,
+    while "indirect_dependencies" are those needed by its direct dependencies, extending further into the graph.
+    "Direct_reverse_dependencies" are packages directly dependent on the given package, and
+    "indirect_reverse_dependencies" extend this concept to include all packages reliant on those directly
+    dependent packages. "Alternatives" offer optional dependencies that can substitute for the primary one,
+    allowing flexibility in package selection and installation.
     """
     package_info = dependencies_graph.get(package_name)
     if not package_info:

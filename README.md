@@ -13,7 +13,7 @@ This API utilizes a directed graph to manage package dependencies, where nodes r
   
 - **GET `/packages/`**: Lists all packages by their names and descriptions, providing a broad overview of the repository's contents.
   
-- **GET `/package/{package_name}/`**: Offers detailed information about a specific package, including direct and indirect dependencies and reverse dependencies, showcasing the package's position within the ecosystem.
+- **GET `/package/{package_name}/`**: Offers detailed information about a specific package, including direct and indirect dependencies and reverse dependencies, showcasing the package's position within the ecosystem. In a dependency graph for managing Debian/Linux server packages, each node represents a package, and edges denote dependencies between them. The "direct_dependencies" are packages a given package immediately requires to function, while "indirect_dependencies" are those needed by its direct dependencies, extending further into the graph. "Direct_reverse_dependencies" are packages directly dependent on the given package, and "indirect_reverse_dependencies" extend this concept to include all packages reliant on those directly dependent packages. "Alternatives" offer optional dependencies that can substitute for the primary one, allowing flexibility in package selection and installation.
   
 - **GET `/packages/no-dependencies/`**: Identifies packages that do not depend on others, highlighting potentially foundational or standalone components.
 

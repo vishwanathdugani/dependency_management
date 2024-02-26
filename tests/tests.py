@@ -57,7 +57,6 @@ def test_package_b_details(status_content):
     assert compare(get_package_details("package-b", "http://localhost:8000") , package_b_expected)
 
 
-
 def test_package_c_details(status_content):
     build_graphs(status_content)
     package_c_expected = {
