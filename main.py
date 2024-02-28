@@ -1,6 +1,9 @@
 import os
 from fastapi import FastAPI, HTTPException, UploadFile, File, Request
 from graph_functions.dependencies_helper import build_graphs, get_package_details, get_packages_with_no_dependencies
+from typing import List
+
+from graph_functions.schemas import PackageResponseModel, PackageDetailsModel
 
 app = FastAPI()
 
@@ -16,7 +19,7 @@ async def upload_status_file(file: UploadFile = File(...)):
     return {"message": "Graph built successfully"}
 
 
-@app.get("/packages/")
+@app.get("/packages/", response_model=List[PackageResponseModel])
 def list_packages():
     """
     Lists all packages with their descriptions.
@@ -28,12 +31,12 @@ def list_packages():
     ]
 
 
-@app.get("/package/{package_name}/")
+@app.get("/package/{package_name}/", response_model=PackageDetailsModel)
 def package_details(package_name: str, request: Request):
     """
     Retrieves detailed information about a specific package.
     """
-    base_url = str(request.base_url).rstrip('/')  # Ensure correct URL formation
+    base_url = str(request.base_url).rstrip('/')
     package_info = get_package_details(package_name, base_url)
     if not package_info:
         raise HTTPException(status_code=404, detail="Package not found")

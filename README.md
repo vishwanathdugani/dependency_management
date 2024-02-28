@@ -3,7 +3,8 @@
 Dependency graph for status located in
 /var/lib/dpkg/status that holds information about software packages.
 
-This API utilizes a directed graph to manage package dependencies, where nodes represent packages, and edges denote dependencies. The API's core functionalities rely on depth-first search (DFS) for traversing the dependency graph. 
+This API utilizes a directed graph to manage package dependencies, where nodes represent packages, 
+and edges denote dependencies. The API's core functionalities rely on depth-first search (DFS) for traversing the dependency graph. 
 
 
 
@@ -34,14 +35,11 @@ There is a CI pipeline (github actions) that is implemented to automatically tes
 To deploy the API locally using Docker, use the provided `docker-compose.yml` file with the `docker-compose up --build` command. 
 
 ### Future improvements and considerations
-
-Certainly, here's a refined and concise version of the future improvements and considerations for your project:
-
 - The assumption was made that the user is trying to manage dependencies on a debian/ubuntu server where the file is stored. 
-- Enhance API security with additional authentication and encryption layers.
+- API security with additional authentication and encryption layers.
 - Develop a user interface for visual data representation, improving user experience.
-- Simplified data presentation by limiting package information to name and description for better readability.
-- Expand testing protocols to thoroughly cover edge cases and ensure robustness.
+- limited package information to name and description for better readability.
+- Expand testing to thoroughly cover edge cases and ensure robustness.
 - Transition from an in-memory model to a graph database for improved data management and scalability.
 - Implement background async tasks for synchronization between the status file and graph database.
 - Incorporate safeguards against circular dependencies to maintain system stability.

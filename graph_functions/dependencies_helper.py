@@ -1,46 +1,8 @@
-from typing import Dict, Set, List, Union
-from pydantic import BaseModel, ValidationError, validator
+from typing import Dict, Set, List
+from pydantic import ValidationError
 import re
 
-
-class Dependency(BaseModel):
-    """
-    Represents a package dependency with optional alternatives.
-    """
-    name: str
-    alternatives: List[str] = []
-
-    def __hash__(self):
-        """Enables Dependency objects to be used as hashable items in sets."""
-        return hash((self.name, tuple(self.alternatives)))
-
-    def __eq__(self, other):
-        """Checks equality with another Dependency object."""
-        if not isinstance(other, Dependency):
-            return NotImplemented
-        return self.name == other.name and self.alternatives == other.alternatives
-
-
-class PackageInfo(BaseModel):
-    """
-    Contains information about a package including its name, description, and dependencies.
-    """
-    Package: str
-    Description: str
-    Depends: List[Dependency] = []
-
-    @validator('Depends', pre=True, allow_reuse=True)
-    def split_depends(cls, v):
-        """Splits and formats the dependency field into a list of Dependency objects."""
-        if not v:
-            return []
-        dependencies = []
-        for dep in v.split(','):
-            parts = [part.strip() for part in dep.split('|')]
-            main_dep, alternatives = parts[0], parts[1:]
-            dependencies.append(Dependency(name=main_dep, alternatives=alternatives))
-        return dependencies
-
+from graph_functions.schemas import PackageInfo
 
 dependencies_graph: Dict[str, PackageInfo] = {}
 reverse_dependencies_graph: Dict[str, Set[str]] = {}
