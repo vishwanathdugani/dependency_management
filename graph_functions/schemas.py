@@ -21,6 +21,11 @@ class PackageInfo(BaseModel):
     Package: str
     Description: str
     Depends: List[Dependency] = []
+    Status: str = ""
+    Priority: str = ""
+    Version: str = ""
+    Architecture: str = ""
+    Installed: str = ""
 
     @validator('Depends', pre=True, allow_reuse=True)
     def split_depends(cls, v):
@@ -36,15 +41,27 @@ class PackageInfo(BaseModel):
 
 
 class PackageResponseModel(BaseModel):
+    """
+    The response model to control the data sent back in the response for packages
+    """
     package: str
     description: str
+    priority: str
+    status: str
+    priority: str
+    version: str
+    architecture: str
+    installed: str
 
 
 class PackageDetailsModel(BaseModel):
+    """
+    The response model to control the dependencies sent back in the response for packages
+    """
     package: str
     description: str
     direct_dependencies: List[str]
-    # indirect_dependencies: List[HttpUrl]
+    indirect_dependencies: List[str]
     direct_reverse_dependencies: List[str]
-    # indirect_reverse_dependencies: List[HttpUrl]
+    indirect_reverse_dependencies: List[str]
     alternatives: Dict[str, Any]
