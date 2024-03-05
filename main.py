@@ -23,18 +23,14 @@ app.add_middleware(
 
 @app.post("/upload-status-file/")
 async def upload_status_file(file: UploadFile = File(...)):
-    """
-    Uploads a status file and builds the dependency graphs based on its content.
-    """
     content_bytes = await file.read()
     content_str = content_bytes.decode('utf-8')
-    dep_helper.build_graphs(content_str)
-    return [
-        {
-            "package": pkg,
-        }
-        for pkg, info in dep_helper.dependencies_graph.items()
-    ]
+
+    if dep_helper.parse_and_validate(content_str):
+        return [
+            {"package": pkg} for pkg, info in dep_helper.dependencies_graph.items()
+        ]
+    raise HTTPException(status_code=400, detail="File is invalid, please upload a valid status file")
 
 
 @app.get("/packages/", response_model=List[PackageResponseModel])
@@ -57,11 +53,10 @@ def list_packages():
 
 
 @app.get("/package/{package_name}/", response_model=PackageDetailsModel)
-def package_details(package_name: str, request: Request):
+def package_details(package_name: str):
     """
     Retrieves detailed information about a specific package.
     """
-    # base_url = str(request.base_url).rstrip('/')
     package_info = dep_helper.get_package_details(package_name)
     if not package_info:
         raise HTTPException(status_code=404, detail="Package not found")

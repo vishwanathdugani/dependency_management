@@ -1,4 +1,6 @@
 from typing import Dict, Set, List
+
+from fastapi import HTTPException
 from pydantic import ValidationError
 import re
 from graph_functions.schemas import PackageInfo
@@ -9,13 +11,31 @@ class DependenciesHelper:
         self.dependencies_graph: Dict[str, PackageInfo] = {}
         self.reverse_dependencies_graph: Dict[str, Set[str]] = {}
 
+    def parse_and_validate(self, content: str) -> bool:
+        """
+        Parses the file content and validates each package entry against the PackageInfo schema.
+        Returns True if all entries are valid, otherwise raises a ValidationError.
+        """
+        packages = content.split('\n\n')
+        valid_packages = []
+        for block in packages:
+            try:
+                package_data = {
+                    match.group(1): match.group(2)
+                    for match in re.finditer(r'^(.*): (.*)$', block, re.M)
+                }
+                PackageInfo.parse_obj(package_data)
+                valid_packages.append(block)
+            except ValidationError as e:
+                raise HTTPException(status_code=400, detail="Invalid package format")
+        if valid_packages:
+            self.build_graphs('\n\n'.join(valid_packages))
+            return True
+        return False
+
     def build_graphs(self, content: str):
-        """
-        Parses package data from a given string and builds forward and reverse dependency graphs.
-        """
         self.dependencies_graph.clear()
         self.reverse_dependencies_graph.clear()
-
         packages = content.split('\n\n')
         for block in packages:
             try:
@@ -23,13 +43,12 @@ class DependenciesHelper:
                     match.group(1): match.group(2)
                     for match in re.finditer(r'^(.*): (.*)$', block, re.M)
                 }
-                if 'Package' in package_data and 'Description' in package_data:
-                    package_info = PackageInfo.parse_obj(package_data)
-                    self.dependencies_graph[package_info.Package] = package_info
-                    for dep in package_info.Depends:
-                        self.reverse_dependencies_graph.setdefault(dep.name, set()).add(package_info.Package)
+                package_info = PackageInfo.parse_obj(package_data)
+                self.dependencies_graph[package_info.Package] = package_info
+                for dep in package_info.Depends:
+                    self.reverse_dependencies_graph.setdefault(dep.name, set()).add(package_info.Package)
             except ValidationError as e:
-                print(f"Error parsing package info: {e}")
+                raise ValueError(f"Error parsing package info: {e}")
 
     def find_dependencies(self, package_name: str, visited: Set[str] = None, forward=True) -> Set[str]:
         """

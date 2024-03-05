@@ -19,13 +19,13 @@ class PackageInfo(BaseModel):
     Contains information about a package including its name, description, and dependencies.
     """
     Package: str
-    Description: str
+    Description: str = None
     Depends: List[Dependency] = []
-    Status: str = ""
-    Priority: str = ""
-    Version: str = ""
-    Architecture: str = ""
-    Installed: str = ""
+    Status: str = None
+    Priority: str = None
+    Version: str = None
+    Architecture: str = None
+    Installed: str = None
 
     @validator('Depends', pre=True, allow_reuse=True)
     def split_depends(cls, v):
@@ -48,7 +48,6 @@ class PackageResponseModel(BaseModel):
     description: str
     priority: str
     status: str
-    priority: str
     version: str
     architecture: str
     installed: str
